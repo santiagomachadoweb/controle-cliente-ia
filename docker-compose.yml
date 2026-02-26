@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  # Nome do serviço que criamos
+  agente-maestro:
+    # O ponto (.) diz para ele usar o Dockerfile que já temos na pasta
+    build: .
+    # Sincroniza seus arquivos do Windows com o Docker
+    volumes:
+      - .:/app
+    # Permite que o Docker "enxergue" o Ollama/IA no seu Windows
+    network_mode: "host"
