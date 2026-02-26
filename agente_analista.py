@@ -2,25 +2,26 @@ import sqlite3
 import requests
 import os
 
-# --- CAMADA 1: REVISOR DE CÓDIGO ---
+# --- CAMADA 1: REVISOR DE CÓDIGO (SEGURANÇA) ---
 def validar_configuracoes():
+    """O Agente revisa o db.py para evitar que erros de config subam para o Git."""
     print("🔍 AGENTE REVISOR: Analisando arquivos de configuração...")
     try:
         with open("db.py", "r", encoding="utf-8") as f:
             conteudo = f.read()
             if "erro_proposital.db" in conteudo:
-                print("\n❌ ERRO CRÍTICO DETECTADO!")
-                print("O Agente identificou que o banco está configurado como 'erro_proposital.db'.")
+                print("\n❌ ERRO CRÍTICO DETECTADO: Banco de erro configurado!")
                 return False
         
-        print("✅ AGENTE REVISOR: Configurações de banco validadas com sucesso.")
+        print("✅ AGENTE REVISOR: Configurações validadas.")
         return True
     except Exception as e:
-        print(f"⚠️ AGENTE REVISOR: Falha ao tentar ler o arquivo db.py: {e}")
+        print(f"⚠️ AGENTE REVISOR: Erro ao ler config: {e}")
         return False
 
-# --- CAMADA 2: INTELIGÊNCIA E RELATÓRIO ---
+# --- CAMADA 2: INTELIGÊNCIA ARTIFICIAL (IA) ---
 def perguntar_ao_agente_ia(total_clientes):
+    """Gera insight inteligente usando o modelo local TinyLlama."""
     print("🧠 AGENTE: Consultando a IA (TinyLlama) para gerar insight...")
     url = "http://localhost:11434/api/generate"
     
@@ -34,51 +35,53 @@ def perguntar_ao_agente_ia(total_clientes):
         resposta = requests.post(url, json=corpo_da_pergunta, timeout=30)
         return resposta.json()['response']
     except Exception:
-        return f"IA em repouso. O sistema continua operando com {total_clientes} clientes!"
+        return f"IA Offline. Sistema operando com {total_clientes} clientes!"
 
 def executar_agente():
-    # 1. ACESSO AO BANCO DE DADOS
+    """Orquestra leitura do banco, IA e envio automático para o GitHub."""
+    # 1. LEITURA DOS DADOS
     conexao = sqlite3.connect('clientes.db')
     total = conexao.execute("SELECT COUNT(*) FROM clientes").fetchone()[0]
     conexao.close()
     
-    # 2. PROCESSAMENTO DE INSIGHT
-    comentario_da_ia = perguntar_ao_agente_ia(total)
-    
+    # 2. GERAÇÃO DO RELATÓRIO
+    comentario_ia = perguntar_ao_agente_ia(total)
     relatorio = f"""
-=== RELATÓRIO DO AGENTE DE IA ===
-Status: OPERACIONAL
-Base de Dados: {total} clientes.
+=== RELATÓRIO AUTOMÁTICO DO AGENTE ===
+Status: 100% OPERACIONAL
+Clientes na Base: {total}
 
 Insight da IA:
-{comentario_da_ia}
-=================================
+{comentario_ia}
+======================================
 """
-    
-    # 3. GRAVAÇÃO DO RESULTADO
     with open("relatorio_agente.txt", "w", encoding="utf-8-sig") as f:
         f.write(relatorio)
     
-    print("\n✅ AGENTE: Relatório inteligente gerado com sucesso!")
+    print("\n✅ AGENTE: Relatório gerado com sucesso!")
 
-    # --- CAMADA 3: AUTOMAÇÃO DE GIT SEGURA ---
+    # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Iniciando processos de Git automáticos...")
     
-    # Adicionamos apenas o relatório para evitar conflitos de permissão no banco de dados
+    # O Agente agora adiciona a si mesmo e o relatório
+    # Usamos comandos individuais para evitar travar no clientes.db
     os.system('git add relatorio_agente.txt')
+    os.system('git add agente_analista.py')
+    os.system('git add docker-compose.yml')
+    os.system('git add .github/workflows/main.yml')
     
-    # Executa o registro e o envio
-    os.system('git commit -m "Automação: Relatório de clientes atualizado pelo Agente"')
-    os.system('git push')
+    # Realiza o commit com mensagem dinâmica
+    os.system('git commit -m "Automação: Agente Maestro atualizou código e relatório"')
+    
+    # Envia para a branch de trabalho
+    os.system('git push origin feature-teste-erro')
 
-    print("🛰️ AGENTE: Alterações enviadas para o GitHub!")
+    print("🛰️ AGENTE: Tudo enviado para o GitHub automaticamente!")
 
-# --- INICIALIZAÇÃO DO SISTEMA ---
+# --- EXECUÇÃO ---
 if __name__ == "__main__":
     print("🚀 Iniciando Agente Maestro...")
-    
     if validar_configuracoes():
         executar_agente()
     else:
         print("\n🛑 OPERAÇÃO CANCELADA PELO AGENTE.")
-        print("Corrija o arquivo 'db.py' para prosseguir.")
