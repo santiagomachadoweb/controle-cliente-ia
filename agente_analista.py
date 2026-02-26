@@ -35,7 +35,7 @@ Insight da IA:
 =================================
 """
     
-    with open("relatorio_agente.txt", "w", encoding="utf-8") as f:
+    with open("relatorio_agente.txt", "w", encoding="utf-8-sig") as f:
         f.write(relatorio)
     
     print("\n✅ AGENTE: Relatório inteligente gerado!")
