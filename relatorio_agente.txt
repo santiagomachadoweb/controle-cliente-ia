@@ -4,9 +4,5 @@ Status: OPERACIONAL
 Base de Dados: 1004 clientes.
 
 Insight da IA:
-A empresa tem 1004 clientes, a qualquer hora!
-
-Com base neste número, essa empresa já foi sufocada pelo seu trabalho.
-
-Acho que está demasiado preocupada com os problemas dos clientes para entender o nosso trabalho, mas o tempo passa e o problema só vem desgostando-se!
+"Mais, menos! Despejá-los com um sorriso e uma bebida" (em português)
 =================================
