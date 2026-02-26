@@ -38,7 +38,7 @@ def perguntar_ao_agente_ia(total_clientes):
         return f"IA Offline. Sistema operando com {total_clientes} clientes!"
 
 def executar_agente():
-    """Orquestra leitura do banco, IA e envio automático para o GitHub."""
+    """Orquestra leitura do banco, IA, Dashboard e envio automático para o GitHub."""
     # 1. LEITURA DOS DADOS
     conexao = sqlite3.connect('clientes.db')
     total = conexao.execute("SELECT COUNT(*) FROM clientes").fetchone()[0]
@@ -63,18 +63,19 @@ Insight da IA:
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Iniciando processos de Git automáticos...")
     
-    # O Agente agora adiciona a si mesmo e o relatório
-    # Usamos comandos individuais para evitar travar no clientes.db
+    # Adicionando todos os arquivos da nossa arquitetura moderna
     os.system('git add relatorio_agente.txt')
     os.system('git add agente_analista.py')
+    os.system('git add app.py')  # Nosso novo Dashboard!
     os.system('git add docker-compose.yml')
     os.system('git add .github/workflows/main.yml')
+    os.system('git add README.md')
     
     # Realiza o commit com mensagem dinâmica
-    os.system('git commit -m "Automação: Agente Maestro atualizou código e relatório"')
+    os.system('git commit -m "Automação: Agente Maestro atualizou código, relatório e Dashboard"')
     
-    # Envia para a branch de trabalho
-    os.system('git push origin feature-teste-erro')
+    # Envia para a branch principal (main)
+    os.system('git push origin main')
 
     print("🛰️ AGENTE: Tudo enviado para o GitHub automaticamente!")
 
@@ -84,4 +85,5 @@ if __name__ == "__main__":
     if validar_configuracoes():
         executar_agente()
     else:
+        # O BLOCO QUE FALTAVA:
         print("\n🛑 OPERAÇÃO CANCELADA PELO AGENTE.")
