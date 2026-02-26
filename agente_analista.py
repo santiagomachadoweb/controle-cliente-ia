@@ -63,22 +63,14 @@ Insight da IA:
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Sincronizando e enviando para o GitHub...")
     
-    # PASSO DE SEGURANÇA: Adiciona tudo antes do pull para evitar erro de 'unstaged changes'
+    # PASSO 1: Preparar e salvar localmente para limpar o index antes do pull
     os.system('git add .')
+    os.system('git commit -m "Automação: Maestro preparando arquivos para sincronia"')
     
-    # Sincronização automática via rebase para evitar abertura do editor Vim
+    # PASSO 2: Sincronizar com a nuvem (Agora o index está limpo e o rebase funciona)
     os.system('git pull origin main --rebase')
     
-    # Adicionando especificamente os arquivos da nossa arquitetura
-    os.system('git add relatorio_agente.txt')
-    os.system('git add agente_analista.py')
-    os.system('git add app.py')  
-    os.system('git add docker-compose.yml')
-    os.system('git add .github/workflows/main.yml')
-    os.system('git add README.md')
-    
-    # Realiza o commit e o envio oficial para a branch principal
-    os.system('git commit -m "Automação: Agente Maestro atualizou código, relatório e Dashboard"')
+    # PASSO 3: Envio final para a branch principal
     os.system('git push origin main')
 
     print("🛰️ AGENTE: Tudo enviado e sincronizado automaticamente!")
