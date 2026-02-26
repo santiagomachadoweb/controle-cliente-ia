@@ -63,10 +63,13 @@ Insight da IA:
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Sincronizando e enviando para o GitHub...")
     
+    # PASSO DE SEGURANÇA: Adiciona tudo antes do pull para evitar erro de 'unstaged changes'
+    os.system('git add .')
+    
     # Sincronização automática via rebase para evitar abertura do editor Vim
     os.system('git pull origin main --rebase')
     
-    # Adicionando todos os arquivos da arquitetura
+    # Adicionando especificamente os arquivos da nossa arquitetura
     os.system('git add relatorio_agente.txt')
     os.system('git add agente_analista.py')
     os.system('git add app.py')  
