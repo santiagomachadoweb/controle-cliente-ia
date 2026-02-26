@@ -63,10 +63,10 @@ Insight da IA:
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Sincronizando e enviando para o GitHub...")
     
-    # NOVIDADE: O Agente agora puxa as atualizações primeiro para evitar o erro "rejected"
-    os.system('git pull origin main')
+    # Sincronização automática via rebase para evitar abertura do editor Vim
+    os.system('git pull origin main --rebase')
     
-    # Adicionando todos os arquivos
+    # Adicionando todos os arquivos da arquitetura
     os.system('git add relatorio_agente.txt')
     os.system('git add agente_analista.py')
     os.system('git add app.py')  
@@ -74,10 +74,8 @@ Insight da IA:
     os.system('git add .github/workflows/main.yml')
     os.system('git add README.md')
     
-    # Realiza o commit
+    # Realiza o commit e o envio oficial para a branch principal
     os.system('git commit -m "Automação: Agente Maestro atualizou código, relatório e Dashboard"')
-    
-    # Envia para a branch principal (main)
     os.system('git push origin main')
 
     print("🛰️ AGENTE: Tudo enviado e sincronizado automaticamente!")
