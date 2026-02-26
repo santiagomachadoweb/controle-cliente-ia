@@ -6,10 +6,8 @@ import os
 def validar_configuracoes():
     print("🔍 AGENTE REVISOR: Analisando arquivos de configuração...")
     try:
-        # O Agente abre o arquivo db.py para ler o que você escreveu
         with open("db.py", "r", encoding="utf-8") as f:
             conteudo = f.read()
-            # Se ele achar o nome do banco de erro, ele bloqueia a execução
             if "erro_proposital.db" in conteudo:
                 print("\n❌ ERRO CRÍTICO DETECTADO!")
                 print("O Agente identificou que o banco está configurado como 'erro_proposital.db'.")
@@ -39,12 +37,12 @@ def perguntar_ao_agente_ia(total_clientes):
         return f"IA em repouso. O sistema continua operando com {total_clientes} clientes!"
 
 def executar_agente():
-    # 1. LER BANCO DE DADOS REAL
+    # 1. ACESSO AO BANCO DE DADOS
     conexao = sqlite3.connect('clientes.db')
     total = conexao.execute("SELECT COUNT(*) FROM clientes").fetchone()[0]
     conexao.close()
     
-    # 2. GERAR INSIGHT E RELATÓRIO
+    # 2. PROCESSAMENTO DE INSIGHT
     comentario_da_ia = perguntar_ao_agente_ia(total)
     
     relatorio = f"""
@@ -57,33 +55,30 @@ Insight da IA:
 =================================
 """
     
-    # SALVAR ARQUIVO LOCALMENTE
+    # 3. GRAVAÇÃO DO RESULTADO
     with open("relatorio_agente.txt", "w", encoding="utf-8-sig") as f:
         f.write(relatorio)
     
     print("\n✅ AGENTE: Relatório inteligente gerado com sucesso!")
 
-    # --- CAMADA 3: AUTOMAÇÃO DE GIT (AJUSTADA PARA EVITAR ERRO DE PERMISSÃO) ---
+    # --- CAMADA 3: AUTOMAÇÃO DE GIT SEGURA ---
     print("🤖 AGENTE: Iniciando processos de Git automáticos...")
     
-    # Em vez de 'git add .', adicionamos apenas os arquivos necessários para evitar travar no clientes.db
+    # Adicionamos apenas o relatório para evitar conflitos de permissão no banco de dados
     os.system('git add relatorio_agente.txt')
-    os.system('git add docker-compose.yml')
-    os.system('git add agente_analista.py')
     
-    # Commit e Push
-    os.system('git commit -m "Automação: Relatório e Infraestrutura (Docker-Compose) atualizados"')
+    # Executa o registro e o envio
+    os.system('git commit -m "Automação: Relatório de clientes atualizado pelo Agente"')
     os.system('git push')
 
     print("🛰️ AGENTE: Alterações enviadas para o GitHub!")
 
-# --- BLOCO PRINCIPAL ---
+# --- INICIALIZAÇÃO DO SISTEMA ---
 if __name__ == "__main__":
     print("🚀 Iniciando Agente Maestro...")
     
-    # O Agente só executa se passar pela revisão de código
     if validar_configuracoes():
         executar_agente()
     else:
         print("\n🛑 OPERAÇÃO CANCELADA PELO AGENTE.")
-        print("Corrija o arquivo 'db.py' antes de tentar subir o código.")
+        print("Corrija o arquivo 'db.py' para prosseguir.")
