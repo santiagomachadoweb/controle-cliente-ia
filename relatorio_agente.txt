@@ -1,8 +1,10 @@
 ﻿
-=== RELATÓRIO DO AGENTE DE IA ===
-Status: OPERACIONAL
-Base de Dados: 1004 clientes.
+=== RELATÓRIO AUTOMÁTICO DO AGENTE ===
+Status: 100% OPERACIONAL
+Clientes na Base: 1004
 
 Insight da IA:
-"Mais, menos! Despejá-los com um sorriso e uma bebida" (em português)
-=================================
+"Bom dia, Sr. Projetista! Pelo menos nossos amigos não têm nada que fazer hoje, então se você está interessado em ganhar um pouco de dinheiro..."
+
+(Sentença curta em português)
+======================================
