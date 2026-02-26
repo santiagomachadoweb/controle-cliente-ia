@@ -1,48 +1,44 @@
 import sqlite3
-import os
+import requests
 
-# O QUE: Funcao para o Agente ler o seu banco de dados SQLite
-def analisar_dados():
-    print("🤖 AGENTE: Acessando o banco de dados 'clientes.db'...")
+def perguntar_ao_agente_ia(total_clientes):
+    print("🧠 AGENTE: Consultando a IA (TinyLlama)...")
+    url = "http://localhost:11434/api/generate"
     
-    # FERRAMENTA: Conexao com o banco que voce ja tem no projeto
+    corpo_da_pergunta = {
+        "model": "tinyllama",
+        "prompt": f"O sistema tem {total_clientes} clientes. Escreva uma frase curta de incentivo para o dono do projeto em português.",
+        "stream": False
+    }
+    
     try:
-        conexao = sqlite3.connect('clientes.db')
-        cursor = conexao.cursor()
-        
-        # ACAO: Contar o total de registros na tabela de clientes
-        cursor.execute("SELECT COUNT(*) FROM clientes")
-        total_clientes = cursor.fetchone()[0]
-        
-        conexao.close()
-        return total_clientes
+        resposta = requests.post(url, json=corpo_da_pergunta, timeout=30)
+        return resposta.json()['response']
     except Exception as e:
-        return f"Erro ao acessar o banco: {e}"
+        return "IA em repouso. O sistema continua operando com {total_clientes} clientes!"
 
-# ONDE: O Agente processa a informacao e gera o insight
-def gerar_relatorio():
-    total = analisar_dados()
+def executar_agente():
+    conexao = sqlite3.connect('clientes.db')
+    total = conexao.execute("SELECT COUNT(*) FROM clientes").fetchone()[0]
+    conexao.close()
     
-    # Texto que a IA "pensou"
-    conteudo = f"""
-    === RELATÓRIO DO AGENTE DE IA ===
-    Status do Sistema: OPERACIONAL
-    Total de Clientes Cadastrados: {total}
+    # AQUI ESTÁ A MÁGICA:
+    comentario_da_ia = perguntar_ao_agente_ia(total)
     
-    Insight do Agente: 
-    O sistema possui uma base de {total} usuários. 
-    A infraestrutura de container (Docker) está validada e verde.
-    Próxima recomendação: Ativar monitoramento de logs CSV.
-    =================================
-    """
-    
-    # ACAO: Criar o arquivo de texto com o resultado
-    with open("relatorio_agente.txt", "w", encoding="utf-8") as arquivo:
-        arquivo.write(conteudo)
-    
-    print("✅ AGENTE: Relatorio gerado com sucesso em 'relatorio_agente.txt'!")
-    print(conteudo)
+    relatorio = f"""
+=== RELATÓRIO DO AGENTE DE IA ===
+Status: OPERACIONAL
+Base de Dados: {total} clientes.
 
-# COMANDO: Inicia o script
+Insight da IA:
+{comentario_da_ia}
+=================================
+"""
+    
+    with open("relatorio_agente.txt", "w", encoding="utf-8") as f:
+        f.write(relatorio)
+    
+    print("\n✅ AGENTE: Relatório inteligente gerado!")
+
 if __name__ == "__main__":
-    gerar_relatorio()
+    executar_agente()
