@@ -21,7 +21,7 @@ def validar_configuracoes():
 
 # --- CAMADA 2: INTELIGÊNCIA ARTIFICIAL (IA) ---
 def perguntar_ao_agente_ia(total_clientes):
-    """Gera insight inteligente usando o modelo local TinyLlama."""
+    """Gera insight inteligente usando o modelo local TinyLlama via Ollama."""
     print("🧠 AGENTE: Consultando a IA (TinyLlama) para gerar insight...")
     url = "http://localhost:11434/api/generate"
     
@@ -39,12 +39,12 @@ def perguntar_ao_agente_ia(total_clientes):
 
 def executar_agente():
     """Orquestra leitura do banco, IA, Dashboard e envio automático para o GitHub."""
-    # 1. LEITURA DOS DADOS
+    # 1. LEITURA DOS DADOS DO BANCO SQLITE
     conexao = sqlite3.connect('clientes.db')
     total = conexao.execute("SELECT COUNT(*) FROM clientes").fetchone()[0]
     conexao.close()
     
-    # 2. GERAÇÃO DO RELATÓRIO
+    # 2. GERAÇÃO DO RELATÓRIO EM TEXTO
     comentario_ia = perguntar_ao_agente_ia(total)
     relatorio = f"""
 === RELATÓRIO AUTOMÁTICO DO AGENTE ===
@@ -61,29 +61,31 @@ Insight da IA:
     print("\n✅ AGENTE: Relatório gerado com sucesso!")
 
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
-    print("🤖 AGENTE: Iniciando processos de Git automáticos...")
+    print("🤖 AGENTE: Sincronizando e enviando para o GitHub...")
     
-    # Adicionando todos os arquivos da nossa arquitetura moderna
+    # NOVIDADE: O Agente agora puxa as atualizações primeiro para evitar o erro "rejected"
+    os.system('git pull origin main')
+    
+    # Adicionando todos os arquivos
     os.system('git add relatorio_agente.txt')
     os.system('git add agente_analista.py')
-    os.system('git add app.py')  # Nosso novo Dashboard!
+    os.system('git add app.py')  
     os.system('git add docker-compose.yml')
     os.system('git add .github/workflows/main.yml')
     os.system('git add README.md')
     
-    # Realiza o commit com mensagem dinâmica
+    # Realiza o commit
     os.system('git commit -m "Automação: Agente Maestro atualizou código, relatório e Dashboard"')
     
     # Envia para a branch principal (main)
     os.system('git push origin main')
 
-    print("🛰️ AGENTE: Tudo enviado para o GitHub automaticamente!")
+    print("🛰️ AGENTE: Tudo enviado e sincronizado automaticamente!")
 
-# --- EXECUÇÃO ---
+# --- EXECUÇÃO DO SCRIPT ---
 if __name__ == "__main__":
     print("🚀 Iniciando Agente Maestro...")
     if validar_configuracoes():
         executar_agente()
     else:
-        # O BLOCO QUE FALTAVA:
         print("\n🛑 OPERAÇÃO CANCELADA PELO AGENTE.")
