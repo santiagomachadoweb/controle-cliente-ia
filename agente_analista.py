@@ -7,16 +7,14 @@ def validar_configuracoes():
     """O Agente revisa o db.py para evitar que erros de config subam para o Git."""
     print("🔍 AGENTE REVISOR: Analisando arquivos de configuração...")
     try:
-        with open("db.py", "r", encoding="utf-8") as f:
-            conteudo = f.read()
-            if "erro_proposital.db" in conteudo:
-                print("\n❌ ERRO CRÍTICO DETECTADO: Banco de erro configurado!")
-                return False
-        
+        # Verifica se o arquivo de banco de dados existe antes de prosseguir
+        if not os.path.exists("clientes.db"):
+            print("❌ ERRO: Banco de dados clientes.db não encontrado!")
+            return False
         print("✅ AGENTE REVISOR: Configurações validadas.")
         return True
     except Exception as e:
-        print(f"⚠️ AGENTE REVISOR: Erro ao ler config: {e}")
+        print(f"⚠️ AGENTE REVISOR: Erro na validação: {e}")
         return False
 
 # --- CAMADA 2: INTELIGÊNCIA ARTIFICIAL (IA) ---
@@ -52,7 +50,7 @@ Status: 100% OPERACIONAL
 Clientes na Base: {total}
 
 Insight da IA:
-{comentario_ia}
+"{comentario_ia}"
 ======================================
 """
     with open("relatorio_agente.txt", "w", encoding="utf-8-sig") as f:
@@ -63,14 +61,14 @@ Insight da IA:
     # --- CAMADA 3: AUTOMAÇÃO DE GIT (AUTONOMIA TOTAL) ---
     print("🤖 AGENTE: Sincronizando e enviando para o GitHub...")
     
-    # PASSO 1: Preparar e salvar localmente para limpar o index antes do pull
+    # Salva tudo o que foi alterado (incluindo o banco de dados se houver novos nomes)
     os.system('git add .')
-    os.system('git commit -m "Automação: Maestro preparando arquivos para sincronia"')
     
-    # PASSO 2: Sincronizar com a nuvem (Agora o index está limpo e o rebase funciona)
+    # Tenta sincronizar de forma limpa via rebase para evitar a tela do editor Vim
     os.system('git pull origin main --rebase')
     
-    # PASSO 3: Envio final para a branch principal
+    # Commit e Push oficial para a branch principal
+    os.system('git commit -m "Automação: Agente Maestro atualizou Dashboard e Relatórios"')
     os.system('git push origin main')
 
     print("🛰️ AGENTE: Tudo enviado e sincronizado automaticamente!")
