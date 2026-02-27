@@ -4,5 +4,5 @@ Status: 100% OPERACIONAL
 Clientes na Base: 1005
 
 Insight da IA:
-"Assim como um amigo que você quer não falar mais com, você não se preocupará mais nesta empresa!"
+"IA Offline. Sistema operando com 1005 clientes!"
 ======================================
